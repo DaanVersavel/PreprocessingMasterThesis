@@ -116,46 +116,6 @@ public class NodeParser {
 		}
 	}
 
-	public void cleanIncomingEdges(List<EdgeParser> incommingEdgeParsers, Map<Long, NodeParser> usableNodes, Map<Integer, Long> nodeIndexToOsmId) {
-		ArrayList<EdgeParser> teRemoveEdgeParser = new ArrayList<>();
-		if (incommingEdgeParsers != null) {
-			for (int i = 0; i < incommingEdgeParsers.size(); i++) {
-				EdgeParser edgeParser = incommingEdgeParsers.get(i);
-				long osmBeginId = nodeIndexToOsmId.get(edgeParser.getHeadNode());
-				if (!usableNodes.containsKey(osmBeginId))
-					teRemoveEdgeParser.add(edgeParser);
-			}
-			incommingEdgeParsers.removeAll(teRemoveEdgeParser);
-		}
-	}
-
-	public void removeIncommingEdge(long osmId, List<EdgeParser> edgeParsers) {
-		for (int i = 0; i < edgeParsers.size(); i++) {
-			EdgeParser edgeParser = edgeParsers.get(i);
-			if (edgeParser.getBeginNodeOsmId() == osmId) {
-				edgeParsers.remove(i);
-			}
-		}
-	}
-
-	public void removeOutgoingEdgeHeadNode(int nodeId, List<EdgeParser> outgoingEdgesArray) {
-		for (int i = 0; i < outgoingEdgesArray.size(); i++) {
-			EdgeParser edge = outgoingEdgesArray.get(i);
-			if (edge.getHeadNode() == nodeId) {
-				outgoingEdgesArray.remove(edge);
-			}
-		}
-	}
-
-	public void removeIncommingEdgeHeadNode(int nodeId, List<EdgeParser> incomingEdgesArray) {
-		for (int i = 0; i < incomingEdgesArray.size(); i++) {
-			EdgeParser edge = incomingEdgesArray.get(i);
-			if (edge.getHeadNode() == nodeId) {
-				incomingEdgesArray.remove(i);
-			}
-		}
-	}
-
 	public void setTypes(HashSet types) {
 		this.types = types;
 	}
