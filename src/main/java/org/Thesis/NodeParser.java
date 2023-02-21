@@ -1,3 +1,5 @@
+package org.Thesis;
+
 import java.util.*;
 
 public class NodeParser {
@@ -7,7 +9,9 @@ public class NodeParser {
 	private double longitude;
 	private double currenCost;
 	private boolean dissabled;
-	private Set<String> types= new HashSet<String>();
+	private long celID;
+
+	private Set<String> types= new HashSet<>();
 	private List<EdgeParser> outgoingEdges = new ArrayList<>();
 
 	public NodeParser(long osmId, double latitude, double longitude) {
@@ -151,6 +155,18 @@ public class NodeParser {
 			}
 		}
 	}
+
+	public void setTypes(HashSet types) {
+		this.types = types;
+	}
+	public long getCelID() {
+		return celID;
+	}
+
+	public void setCelID(long celID) {
+		this.celID = celID;
+	}
+
 }
 
 

@@ -1,19 +1,12 @@
-
+package org.Thesis;
 
 public class EdgeParser {
-	public int headNode;
 	private double length;
 	private double travelTime;
 	private long beginNodeOsmId;
 	private long endNodeOsmId;
 	private String edgeType;
-	
-	public EdgeParser(int headNode, double length, double travelTime) {
-		this.headNode = headNode;
-		this.length = length;
-		this.travelTime = travelTime;
-		this.edgeType="";
-	}
+
 	public EdgeParser(long beginNodeOsmId, long endNodeOsm, double length){
 		this.beginNodeOsmId = beginNodeOsmId;
         this.endNodeOsmId = endNodeOsm;
@@ -22,7 +15,6 @@ public class EdgeParser {
 	}
 
 	public EdgeParser deepCopy(EdgeParser edge) {
-		this.headNode = edge.headNode;
 		this.length = edge.length;
 		this.travelTime = edge.travelTime;
 		return this;
@@ -34,14 +26,6 @@ public class EdgeParser {
 
 	public void setEdgeType(String edgeType) {
 		this.edgeType = edgeType;
-	}
-
-	public int getHeadNode() {
-		return headNode;
-	}
-
-	public void setHeadNode(int headNode) {
-		this.headNode = headNode;
 	}
 
 	public double getLength() {
