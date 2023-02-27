@@ -3,7 +3,6 @@ package org.Thesis;
 import java.util.*;
 
 public class NodeParser {
-	// The OSM id of the node.
 	private long osmId;
 	private double latitude;
 	private double longitude;
@@ -19,7 +18,25 @@ public class NodeParser {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.dissabled = false;
+		this.currenCost=0.0;
 	}
+
+	public NodeParser(NodeParser node) {
+		this.osmId = node.getOsmId();
+		this.latitude = node.getLatitude();
+		this.longitude = node.getLongitude();
+		this.celID = node.getCelID();
+		this.outgoingEdges = node.getCopyOfOutgoingEdges();
+	}
+
+	private List<EdgeParser> getCopyOfOutgoingEdges() {
+		List<EdgeParser> copy = new ArrayList<>();
+		for (EdgeParser edge : outgoingEdges) {
+            copy.add(new EdgeParser(edge));
+        }
+		return copy;
+	}
+
 
 	public double getCurrenCost() {
 		return currenCost;
@@ -75,7 +92,7 @@ public class NodeParser {
 
 	@Override
 	public String toString() {
-		return (String.valueOf(latitude) + "," + longitude);
+		return (latitude + "," + longitude);
 	}
 
 	public void removeOutgoingEdge(long nodeToRemove) {
@@ -116,7 +133,7 @@ public class NodeParser {
 		}
 	}
 
-	public void setTypes(HashSet types) {
+	public void setTypes(Set<String> types) {
 		this.types = types;
 	}
 	public long getCelID() {

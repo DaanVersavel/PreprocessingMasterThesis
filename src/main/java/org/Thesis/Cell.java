@@ -10,13 +10,15 @@ public class Cell {
     private long cellId;
     private Map<Long,NodeParser> cellNodesMap;
     private List<NodeParser> cellList;
-
     private NodeParser landmark;
+    //map with in every entry a map of cellid and factor
+    private Map<Double,Map<Long,Double>> factorMap;
 
     public Cell(long cellId){
         this.cellId = cellId;
         this.cellNodesMap = new HashMap<>();
         this.cellList = new ArrayList<>();
+        this.factorMap= new HashMap<>();
     }
 
     public void addNode(NodeParser node) {
@@ -54,5 +56,17 @@ public class Cell {
 
     public void setLandmark(NodeParser landmark) {
         this.landmark = landmark;
+    }
+
+    public Map<Double, Map<Long, Double>> getFactorMap() {
+        return factorMap;
+    }
+
+    public void setFactorMap(Map<Double, Map<Long, Double>> factorMap) {
+        this.factorMap = factorMap;
+    }
+
+    public void addFactorMap(double time, Map<Long, Double> factorMapForTime) {
+        this.factorMap.put(time, factorMapForTime);
     }
 }
