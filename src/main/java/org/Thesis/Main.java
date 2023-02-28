@@ -1,5 +1,6 @@
 package org.Thesis;
 
+import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.Random;
 
@@ -14,8 +15,8 @@ public class Main {
         //******************************
         Graph graph = new Graph(fileName);
 
+        //Make cells
         graph.splitGraph(9);
-        graph.makeSpeedMatrixs();
         for(Cell cell:graph.getCellMap().values()){
             System.out.println(cell.getCellList().size());
         }
@@ -37,14 +38,14 @@ public class Main {
             }
         }
 
-        //cell maken
-        //landmark kiezen
-        //timedependent tijd tussen alles opslaan en bijhouden
+
         //uitschreiven naar file
-
-
-
-
+        Output output = new Output(graph);
+        try {
+            output.writeToFile("out");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
 
         System.out.println();

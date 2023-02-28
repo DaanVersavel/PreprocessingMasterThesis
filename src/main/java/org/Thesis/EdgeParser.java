@@ -6,6 +6,7 @@ public class EdgeParser {
 	private double length;
 	private long beginNodeOsmId;
 	private long endNodeOsmId;
+	private double defaultTravelTime;
 	private String edgeType;
 
 	public EdgeParser(long beginNodeOsmId, long endNodeOsm, double length){
@@ -21,12 +22,13 @@ public class EdgeParser {
 		this.length = edge.getLength();
 		this.edgeType = edge.getEdgeType();
 	}
+
 	//nodeArrivelTime= time when we reach Begin node of edge
 	//return the passed time from when reaching the end node of the edge
 	public double getTravelTime(double nodeArrivalTime, Map<String, Double[][]> speedMatrixMap) {
 		Double[][] speedMatrix = speedMatrixMap.get(this.edgeType);
 
-		double travelTime= 0.0;
+		double travelTime;
 		Double time = nodeArrivalTime;
 		double distanceToGo = length;
 		double speed;
@@ -91,7 +93,14 @@ public class EdgeParser {
 
 	public double getTravelTimeDefault(Map<String, Double[][]> speedMatrixMap) {
 		double defaultSpeed = speedMatrixMap.get(this.edgeType)[0][2];
-		double travelTime= length/defaultSpeed;
-		return travelTime;
+		return length/defaultSpeed;
+	}
+
+	public double getDefaultTravelTime() {
+		return defaultTravelTime;
+	}
+
+	public void setDefaultTravelTime(double defaultTravelTime) {
+		this.defaultTravelTime = defaultTravelTime;
 	}
 }

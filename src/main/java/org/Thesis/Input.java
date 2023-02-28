@@ -29,8 +29,6 @@ public class Input {
             for (Object key : mapJson.keySet()) {
                 long id = Long.parseLong((String) key);
                 JSONObject nodeJson = (JSONObject) mapJson.get(key);
-
-
                 NodeParser node = new NodeParser((Long) nodeJson.get("osmId"), (Double) nodeJson.get("latitude"), (Double) nodeJson.get("longitude"));
 
                 //node.setTypes(new HashSet<>((Collection) nodeJson.get("types")));
@@ -45,16 +43,11 @@ public class Input {
                     edges.add(edge);
                 }
                 node.setOutgoingEdges(edges);
-
                 nodesMap.put(id, node);
             }
-
-
         } catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     public Map<Long, NodeParser> getNodesMap() {

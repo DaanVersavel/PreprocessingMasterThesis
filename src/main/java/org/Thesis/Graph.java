@@ -16,7 +16,18 @@ public class Graph {
         this.nodesMap = input.getNodesMap();
         this.cellMap = new HashMap<>();
         this.speedMatrixMap = new HashMap<>();
+        makeSpeedMatrixs();
+        addDefaultTravelTime();
+    }
 
+    private void addDefaultTravelTime() {
+        for(NodeParser nodeParser:nodesMap.values()){
+
+            for(EdgeParser edgeParser:nodeParser.getOutgoingEdges()){
+                Double[][] speedMatrix = speedMatrixMap.get(edgeParser.getEdgeType());
+                edgeParser.setDefaultTravelTime(edgeParser.getLength()/speedMatrix[0][2]);
+            }
+        }
     }
 
     public Map<Long, NodeParser> getNodesMap() {

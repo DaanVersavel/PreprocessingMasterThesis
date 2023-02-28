@@ -49,7 +49,7 @@ public class Dijkstra {
             //update the adjacent node-time
             for(EdgeParser edge: removedNode.getOutgoingEdges()){
                 //when reaching the node
-                double travelTimeAtNode = shortestTimeMap.get(edge.getBeginNodeOsmId())+ edge.getTravelTimeDefault(graph.getSpeedMatrixMap());
+                double travelTimeAtNode = shortestTimeMap.get(edge.getBeginNodeOsmId())+ edge.getDefaultTravelTime();
                 //If better time update time and readd to pq
                 if(travelTimeAtNode<shortestTimeMap.get(edge.getEndNodeOsmId())){
                     shortestTimeMap.put(edge.getEndNodeOsmId(),travelTimeAtNode);
