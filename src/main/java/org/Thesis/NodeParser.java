@@ -8,7 +8,7 @@ public class NodeParser {
 	private double longitude;
 	private double currenCost;
 	private boolean dissabled;
-	private long celID;
+	private long cellID;
 
 	private Set<String> types= new HashSet<>();
 	private List<EdgeParser> outgoingEdges = new ArrayList<>();
@@ -25,7 +25,7 @@ public class NodeParser {
 		this.osmId = node.getOsmId();
 		this.latitude = node.getLatitude();
 		this.longitude = node.getLongitude();
-		this.celID = node.getCelID();
+		this.cellID = node.getCelID();
 		this.outgoingEdges = node.getCopyOfOutgoingEdges();
 	}
 
@@ -137,11 +137,11 @@ public class NodeParser {
 		this.types = types;
 	}
 	public long getCelID() {
-		return celID;
+		return cellID;
 	}
 
 	public void setCelID(long celID) {
-		this.celID = celID;
+		this.cellID = celID;
 	}
 
 }

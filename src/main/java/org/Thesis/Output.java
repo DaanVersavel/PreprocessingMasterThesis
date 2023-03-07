@@ -2,9 +2,9 @@ package org.Thesis;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +23,7 @@ public class Output {
         for(Cell cell : cellMap.values()) {
             Map josnMapCell = new HashMap();
             josnMapCell.put("cellId",cell.getCellId());
+            //landmark
             josnMapCell.put("LandmarkId",cell.getLandmark().getOsmId());
 
             //nodes
@@ -32,14 +33,16 @@ public class Output {
                 nodeMapJson.put("osmId", node.getOsmId());
                 nodeMapJson.put("latitude", node.getLatitude());
                 nodeMapJson.put("longitude", node.getLongitude());
+                nodeMapJson.put("cellID",node.getCelID());
                 JSONArray edgesJsonArray = new JSONArray();
                 for (EdgeParser edge : node.getOutgoingEdges()) {
                     JSONObject edgeJson = new JSONObject();
                     //edgeJson.put("length", edge.getLength());
                     edgeJson.put("beginNodeOsmId", edge.getBeginNodeOsmId());
                     edgeJson.put("endNodeOsmId", edge.getEndNodeOsmId());
-                    //edgeJson.put("edgeType", edge.getEdgeType());
+                    edgeJson.put("edgeType", edge.getEdgeType());
                     edgeJson.put("defaultTravelTime",edge.getDefaultTravelTime());
+                    edgeJson.put("length",edge.getLength());
                     // add any other attributes for the edge
                     edgesJsonArray.add(edgeJson);
                 }

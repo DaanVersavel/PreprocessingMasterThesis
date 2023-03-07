@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
 
         //Read in file
-        String fileName="src/main/java/org/Thesis/Input/DeelAalst.json";
+        String fileName="src/main/java/org/Thesis/Input/Aalst.json";
 
         //******************************
         //split graph in cell and choose landmarks
@@ -39,7 +39,7 @@ public class Main {
         }
 
 
-        //uitschreiven naar file
+        //uitschrijven naar file
         Output output = new Output(graph);
         try {
             output.writeToFile("out");
@@ -48,7 +48,7 @@ public class Main {
         }
 
 
-        System.out.println();
+        System.out.println("Done");
 
 
 

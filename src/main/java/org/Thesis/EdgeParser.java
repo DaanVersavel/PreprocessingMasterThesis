@@ -20,6 +20,7 @@ public class EdgeParser {
 		this.beginNodeOsmId = edge.getBeginNodeOsmId();
 		this.endNodeOsmId = edge.getEndNodeOsmId();
 		this.length = edge.getLength();
+		this.defaultTravelTime = edge.getDefaultTravelTime();
 		this.edgeType = edge.getEdgeType();
 	}
 
@@ -48,13 +49,27 @@ public class EdgeParser {
 
 		double expectedArrivalTime = time + (distanceToGo/speed);
 
+//		//if we cross the border of the speed matrix
+//		if(expectedArrivalTime < speedMatrix[6][1]){
+//			while(expectedArrivalTime> speedMatrix[row][1]){
+//				distanceToGo = distanceToGo-(speed*(speedMatrix[row][1]-time));
+//				row++;
+//				if(row>=7){
+//					break;
+//				}
+//				time = speedMatrix[row][0];
+//				speed = speedMatrix[row][2];
+//				expectedArrivalTime = time + (distanceToGo/speed);
+//			}
+//		}
 		while(expectedArrivalTime> speedMatrix[row][1]){
-			distanceToGo = distanceToGo-(speed*(speedMatrix[row][1]-time));
-			row++;
-			time = speedMatrix[row][0];
-			speed = speedMatrix[row][2];
-			expectedArrivalTime = time + (distanceToGo/speed);
+				distanceToGo = distanceToGo-(speed*(speedMatrix[row][1]-time));
+				row++;
+				time = speedMatrix[row][0];
+				speed = speedMatrix[row][2];
+				expectedArrivalTime = time + (distanceToGo/speed);
 		}
+
 		travelTime = expectedArrivalTime-nodeArrivalTime;
 		return travelTime;
 	}
