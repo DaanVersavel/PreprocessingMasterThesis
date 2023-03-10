@@ -65,7 +65,6 @@ public class TimeDependentDijkstra {
 
         Map<Long,Double> outputMap = new HashMap<>();
 
-        //TODO Dijkstra
         Dijkstra dijkstra = new Dijkstra(graph);
         Map<Long,Double> defaulMap = dijkstra.solveDijkstra(startNode);
 
@@ -77,7 +76,7 @@ public class TimeDependentDijkstra {
                 double factor=shortestTimeMap.get(landmark.getOsmId())/defaulMap.get(cellID);
                 outputMap.put(cellID,factor);
             }else{
-                outputMap.put(cellID,0.0);
+                outputMap.put(cellID,1.0);
             }
         }
 

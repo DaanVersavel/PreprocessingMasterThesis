@@ -6,9 +6,15 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
+        //args[0] inputPath
+        //args[1] Number of cells
+        //args[2] nameOfMAp
 
         //Read in file
-        String fileName="src/main/java/org/Thesis/Input/Aalst.json";
+        String fileName=args[0];
+        int numberOfCell= Integer.parseInt(args[1]);
+
+        String outputfilename = args[2]+"-preprocessing-"+numberOfCell;
 
         //******************************
         //split graph in cell and choose landmarks
@@ -16,16 +22,34 @@ public class Main {
         Graph graph = new Graph(fileName);
 
         //Make cells
-        graph.splitGraph(9);
+        graph.splitGraph(numberOfCell);
         for(Cell cell:graph.getCellMap().values()){
             System.out.println(cell.getCellList().size());
         }
         //choose Landmarks
-        Random random = new Random(54485478445L);
+        Random random = new Random();
         for(Cell cell:graph.getCellMap().values()){
             int index = random.nextInt(cell.getCellList().size());
             cell.setLandmark(cell.getCellList().get(index));
         }
+
+        boolean changed = true;
+        while(changed){
+            changed = false;
+            for(Cell cell:graph.getCellMap().values()){
+                Dijkstra dijkstra = new Dijkstra(graph);
+                Map<Long, Double> map = dijkstra.solveDijkstra(cell.getLandmark().getOsmId());
+                for(double distance:map.values()){
+                    if(distance==Double.MAX_VALUE){
+                        int index = random.nextInt(cell.getCellList().size());
+                        cell.setLandmark(cell.getCellList().get(index));
+                        changed = true;
+                        break;
+                    }
+                }
+            }
+        }
+
 
         //time => Map<CellID,Factor
         //calculate factors
@@ -42,7 +66,7 @@ public class Main {
         //uitschrijven naar file
         Output output = new Output(graph);
         try {
-            output.writeToFile("out");
+            output.writeToFile(outputfilename);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

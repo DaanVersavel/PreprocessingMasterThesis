@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Input {
-    private Map<Long, NodeParser> nodesMap;
+    private final Map<Long, NodeParser> nodesMap;
 
 
     public Input(String filePath){
@@ -31,14 +31,13 @@ public class Input {
                 JSONObject nodeJson = (JSONObject) mapJson.get(key);
                 NodeParser node = new NodeParser((Long) nodeJson.get("osmId"), (Double) nodeJson.get("latitude"), (Double) nodeJson.get("longitude"));
 
-                //node.setTypes(new HashSet<>((Collection) nodeJson.get("types")));
-
                 List<EdgeParser> edges = new ArrayList<>();
                 JSONArray edgesJson = (JSONArray) nodeJson.get("outgoingEdges");
                 for (Object edgeObj : edgesJson) {
                     JSONObject edgeJson = (JSONObject) edgeObj;
                     EdgeParser edge = new EdgeParser((long) edgeJson.get("beginNodeOsmId"), (long) edgeJson.get("endNodeOsmId"), (double) edgeJson.get("length"));
                     edge.setEdgeType((String) edgeJson.get("edgeType"));
+                    edge.setDefaultTravelTime((double) edgeJson.get("defaultTravelTime"));
                     // set any other attributes for the edge
                     edges.add(edge);
                 }
