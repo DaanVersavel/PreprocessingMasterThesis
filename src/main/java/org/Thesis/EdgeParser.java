@@ -33,41 +33,38 @@ public class EdgeParser {
 		Double time = nodeArrivalTime;
 		double distanceToGo = length;
 		double speed;
+		double expectedArrivalTime;
 
 		//find Row
-		Double leftBorder= speedMatrix[0][0];
-		Double rightBorder= speedMatrix[0][1];
-		int incrementor=0;
-		while(!(leftBorder<=nodeArrivalTime) || !(nodeArrivalTime<rightBorder)){
-			incrementor++;
-			leftBorder = speedMatrix[incrementor][0];
-			rightBorder = speedMatrix[incrementor][1];
-		}
-		int row = incrementor;
-		speed = speedMatrix[row][2];
+		if(nodeArrivalTime<speedMatrix[6][1]){
+			Double leftBorder= speedMatrix[0][0];
+			Double rightBorder= speedMatrix[0][1];
+			int incrementor=0;
+			while(!(leftBorder<=nodeArrivalTime) || !(nodeArrivalTime<rightBorder)){
+				incrementor++;
+				leftBorder = speedMatrix[incrementor][0];
+				rightBorder = speedMatrix[incrementor][1];
+			}
+			int row = incrementor;
+			speed = speedMatrix[row][2];
 
 
-		double expectedArrivalTime = time + (distanceToGo/speed);
+			expectedArrivalTime = time + (distanceToGo/speed);
 
-//		//if we cross the border of the speed matrix
-//		if(expectedArrivalTime < speedMatrix[6][1]){
-//			while(expectedArrivalTime> speedMatrix[row][1]){
-//				distanceToGo = distanceToGo-(speed*(speedMatrix[row][1]-time));
-//				row++;
-//				if(row>=7){
-//					break;
-//				}
-//				time = speedMatrix[row][0];
-//				speed = speedMatrix[row][2];
-//				expectedArrivalTime = time + (distanceToGo/speed);
-//			}
-//		}
-		while(expectedArrivalTime> speedMatrix[row][1]){
+			//if we cross the border of the speed matrix
+			while(expectedArrivalTime> speedMatrix[row][1]){
 				distanceToGo = distanceToGo-(speed*(speedMatrix[row][1]-time));
 				row++;
+				if(row>=7){
+					break;
+				}
 				time = speedMatrix[row][0];
 				speed = speedMatrix[row][2];
 				expectedArrivalTime = time + (distanceToGo/speed);
+			}
+		}else{
+			speed = speedMatrix[6][2];
+			expectedArrivalTime = time + (distanceToGo/speed);
 		}
 
 		travelTime = expectedArrivalTime-nodeArrivalTime;
