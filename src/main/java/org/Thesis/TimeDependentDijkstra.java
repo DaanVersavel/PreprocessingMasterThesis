@@ -1,8 +1,6 @@
 package org.Thesis;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class TimeDependentDijkstra {
 
@@ -13,10 +11,11 @@ public class TimeDependentDijkstra {
     }
 
 
-    public Map<Long, Double> solveDijkstraTimeDependant(long startNode, double startTime){
+    public Map<Long, Double> solveDijkstraTimeDependant(long startNode, double startTime, List<Long> landmarksID){
         PriorityQueue<NodeParser> pq = new PriorityQueue<>(new NodeComparator());
         //Offset from starting time reason why the value for startnode is 0
         Map<Long,Double> shortestTimeMap = new HashMap<>();
+        List<Long> landmarksIDs = new ArrayList<>(landmarksID);
 
         Map<Long,NodeParser> nodeMap = new HashMap<>();
 
@@ -58,6 +57,12 @@ public class TimeDependentDijkstra {
                     }
                 }
             }
+            for(int j =0;j<landmarksIDs.size();j++){
+                if(shortestTimeMap.get(landmarksIDs.get(j))!=Double.MAX_VALUE){
+                    landmarksIDs.remove(j);
+                }
+            }
+            if(landmarksIDs.size()==0.0)break;
         }
 
         //MAP of cellID and travelTime

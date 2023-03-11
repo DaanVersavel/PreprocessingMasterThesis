@@ -1,6 +1,8 @@
 package org.Thesis;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -13,8 +15,11 @@ public class Main {
         //Read in file
         String fileName=args[0];
         int numberOfCell= Integer.parseInt(args[1]);
+//        String fileName="src/main/java/org/Thesis/Input/Aalst.json";
+//        int numberOfCell= 9;
 
         String outputfilename = args[2]+"-preprocessing-"+numberOfCell;
+        //String outputfilename = "-preprocessing-"+numberOfCell;
 
         //******************************
         //split graph in cell and choose landmarks
@@ -49,6 +54,10 @@ public class Main {
                 }
             }
         }
+        List<Long> landmarkIDs = new ArrayList<>();
+        for(Cell cell:graph.getCellMap().values()){
+            landmarkIDs.add(cell.getLandmark().getOsmId());
+        }
 
 
         //time => Map<CellID,Factor
@@ -57,7 +66,7 @@ public class Main {
             System.out.println("CellID: "+cell.getCellId());
             for(double time=0;time<86400;time+=600){
                 TimeDependentDijkstra td = new TimeDependentDijkstra(graph);
-                Map<Long,Double> tempMap= td.solveDijkstraTimeDependant(cell.getLandmark().getOsmId(),time);
+                Map<Long,Double> tempMap= td.solveDijkstraTimeDependant(cell.getLandmark().getOsmId(),time,landmarkIDs);
                 cell.addFactorMap(time,tempMap);
             }
         }
