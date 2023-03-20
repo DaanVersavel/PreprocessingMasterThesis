@@ -6,11 +6,11 @@ public class NodeParser {
 	private long osmId;
 	private double latitude;
 	private double longitude;
-	private double currenCost;
-	private boolean dissabled;
+	private transient double currenCost;
+	private transient boolean dissabled;
 	private long cellID;
 
-	private Set<String> types= new HashSet<>();
+	private transient Set<String> types= new HashSet<>();
 	private List<EdgeParser> outgoingEdges = new ArrayList<>();
 
 	public NodeParser(long osmId, double latitude, double longitude) {
