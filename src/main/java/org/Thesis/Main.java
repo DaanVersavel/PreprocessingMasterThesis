@@ -1,15 +1,12 @@
 package org.Thesis;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         //args[0] inputPath
         //args[1] Number of cells
         //args[2] nameOfMAp
@@ -18,14 +15,14 @@ public class Main {
         //Read in file
         String fileName=args[0];
         int numberOfCell= Integer.parseInt(args[1]);
-        String outputfilename = args[2]+"-preprocessing-"+numberOfCell;
+        String outputfilename = args[2]+"-preprocessing-"+numberOfCell+"C";
         int numberOfThreads = Integer.parseInt(args[3]);
 
 
-//        String fileName="src/main/java/org/Thesis/Input/aalst.json";
-//        int numberOfCell= 64;
-//        String outputfilename = "TestAAlst-preprocessing-"+numberOfCell;
-//        int numberOfThreads = 3;
+//        String fileName="D:/Onedrives/OneDrive - KU Leuven/2022-2023/Masterproof/Testen/osm-inlezen/Aalst.json";
+//        int numberOfCell= 16;
+//        String outputfilename = "Test-Aalst-preprocessing-"+numberOfCell;
+//        int numberOfThreads = 9;
         //******************************
         //split graph in cell and choose landmarks
         //******************************
@@ -36,26 +33,26 @@ public class Main {
         for(Cell cell:graph.getCellMap().values()){
             System.out.println("Number of nodes in cell: "+cell.getCellId()+" "+ cell.getCellList().size());
         }
-
-
         //remove empty cells
-        graph.getCellMap().values().removeIf(cell -> cell.getCellList().size() == 0);
+        graph.getCellMap().values().removeIf(cell -> cell.getCellList().isEmpty());
+
+        //********************************
+        //RANDOM
+        //********************************
 
         //choose Landmarks
         Random random = new Random();
-
         for(Cell cell : graph.getCellMap().values()){
                 int index = random.nextInt(cell.getCellList().size());
                 cell.setLandmark(cell.getCellList().get(index));
         }
-
 
         boolean changed = true;
         while(changed){
             changed = false;
             for(Cell cell:graph.getCellMap().values()){
                 Dijkstra dijkstra = new Dijkstra(graph);
-                Map<Long, Double> map = dijkstra.solveDijkstra(cell.getLandmark().getOsmId());
+                Map<Long, Double> map = dijkstra.solveDijkstraNormal(cell.getLandmark().getOsmId());
                 for(double distance:map.values()){
                     if(distance==Double.MAX_VALUE){
                         int index = random.nextInt(cell.getCellList().size());
@@ -66,6 +63,42 @@ public class Main {
                 }
             }
         }
+
+        //********************************
+        //Central
+        //********************************
+
+//        DistanceComparator distanceComparator = new DistanceComparator();
+//        for(Cell cell : graph.getCellMap().values()){
+//            //osmId , distance
+//            for(NodeParser nodeParser:cell.getCellList()){
+//                double distance = getDistance(cell,nodeParser);
+//                nodeParser.setDistanceToCenter(distance);
+//            }
+//            cell.getCellList().sort(distanceComparator);
+//            long landmark = cell.getCellList().get(cell.getCurrentIndex()).getOsmId();
+//            cell.updateIndex();
+//            cell.setLandmark(graph.getNodesMap().get(landmark));
+//        }
+//
+//        boolean changed = true;
+//        while(changed){
+//            changed = false;
+//            for(Cell cell:graph.getCellMap().values()){
+//                Dijkstra dijkstra = new Dijkstra(graph);
+//                Map<Long, Double> map = dijkstra.solveDijkstraNormal(cell.getLandmark().getOsmId());
+//                for(double distance:map.values()){
+//                    if(distance==Double.MAX_VALUE){
+//                        long landmark = cell.getCellList().get(cell.getCurrentIndex()).getOsmId();
+//                        cell.updateIndex();
+//                        cell.setLandmark(graph.getNodesMap().get(landmark));
+//                        System.out.println("Changed Landmark");
+//                        changed = true;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
         System.out.println("Landmarks chosen, start with making factor map");
 
         List<Long> landmarkIDs = new ArrayList<>();
@@ -73,18 +106,6 @@ public class Main {
             landmarkIDs.add(cell.getLandmark().getOsmId());
         }
         List<Double> timeToCalculate = getTimes();
-
-
-//        //time => Map<CellID,Factor
-//        //calculate factors
-//        for(Cell cell:graph.getCellMap().values()){
-//            System.out.println("CellID: "+cell.getCellId());
-//            for(double time=0;time<86400;time+=600){
-//                TimeDependentDijkstra td = new TimeDependentDijkstra(graph);
-//                Map<Long,Double> tempMap= td.solveDijkstraTimeDependant(cell.getLandmark().getOsmId(),time,landmarkIDs);
-//                cell.addFactorMap(time,tempMap);
-//            }
-//        }
 
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
 
@@ -105,17 +126,14 @@ public class Main {
         System.out.println("Start writing to file");
         output.writeToFile(outputfilename);
         System.out.println("Done");
+    }
 
-//        //uitschrijven naar file
-//        try {
-//            Output output = new Output(graph);
-//            output.writeToFile(outputfilename);
-//            System.out.println("Done writing to file");
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-
-
+    private static double getDistance(Cell cell, NodeParser nodeParser) {
+        double x1 = cell.getCenterLatitude();
+        double y1 = cell.getCenterLongitude();
+        double x2 = nodeParser.getLatitude();
+        double y2 = nodeParser.getLongitude();
+        return Math.abs(Math.sqrt(Math.pow(x1-x2,2)+Math.pow(y1-y2,2)));
     }
 
     private static List<Double> getTimes() {

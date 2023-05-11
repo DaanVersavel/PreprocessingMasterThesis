@@ -6,6 +6,7 @@ public class NodeParser {
 	private long osmId;
 	private double latitude;
 	private double longitude;
+	private transient double distanceToCenter;
 	private transient double currenCost;
 	private transient boolean dissabled;
 	private long cellID;
@@ -144,6 +145,13 @@ public class NodeParser {
 		this.cellID = celID;
 	}
 
+	public double getDistanceToCenter() {
+		return distanceToCenter;
+	}
+
+	public void setDistanceToCenter(double distanceToCenter) {
+		this.distanceToCenter = distanceToCenter;
+	}
 }
 
 

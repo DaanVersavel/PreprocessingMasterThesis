@@ -8,6 +8,9 @@ import java.util.Map;
 public class Cell {
 
     private long cellId;
+    private transient double centerLatitude;
+    private transient double centerLongitude;
+    private transient int currentIndex=0;
     private Map<Long,NodeParser> cellNodesMap;
     private List<NodeParser> cellList;
     private NodeParser landmark;
@@ -68,5 +71,23 @@ public class Cell {
 
     public void addFactorMap(double time, Map<Long, Double> factorMapForTime) {
         this.factorMap.put(time, factorMapForTime);
+    }
+    public double getCenterLatitude() {
+        return centerLatitude;
+    }
+    public void setCenterLatitude(double centerLatitude) {
+        this.centerLatitude = centerLatitude;
+    }
+    public double getCenterLongitude() {
+        return centerLongitude;
+    }
+    public void setCenterLongitude(double centerLongitude) {
+        this.centerLongitude = centerLongitude;
+    }
+    public void updateIndex(){
+        this.currentIndex++;
+    }
+    public int getCurrentIndex() {
+        return currentIndex;
     }
 }

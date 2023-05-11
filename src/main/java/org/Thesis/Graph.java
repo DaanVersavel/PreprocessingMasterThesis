@@ -8,6 +8,10 @@ public class Graph {
     private Map<Long, NodeParser> nodesMap;
     private Map<Long,Cell> cellMap;
     private Map<String, Double[][]> speedMatrixMap;
+    private double minLat;
+    private double maxLat;
+    private double minLong;
+    private double maxLong;
 
 
     public Graph(String filename) {
@@ -17,9 +21,10 @@ public class Graph {
         this.cellMap = new HashMap<>();
         this.speedMatrixMap = new HashMap<>();
         makeSpeedMatrixs();
-        addDefaultTravelTime();
+        //addDefaultTravelTime();
     }
 
+    //TODO KUT FUNCTIE
     private void addDefaultTravelTime() {
         for(NodeParser nodeParser:nodesMap.values()){
             for(EdgeParser edgeParser:nodeParser.getOutgoingEdges()){
@@ -33,16 +38,8 @@ public class Graph {
         return nodesMap;
     }
 
-    public void setNodesMap(Map<Long, NodeParser> nodesMap) {
-        this.nodesMap = nodesMap;
-    }
-
     public Map<Long, Cell> getCellMap() {
         return cellMap;
-    }
-
-    public void setCellMap(Map<Long, Cell> cellMap) {
-        this.cellMap = cellMap;
     }
 
     public Map<String, Double[][]> getSpeedMatrixMap() {
@@ -53,10 +50,10 @@ public class Graph {
 
         //Horizontal Latitude
         //Vertical Longitude
-        double minLat = Double.MAX_VALUE;
-        double maxLat = Double.MIN_VALUE;
-        double minLong = Double.MAX_VALUE;
-        double maxLong = Double.MIN_VALUE;
+        minLat = Double.MAX_VALUE;
+        maxLat = Double.MIN_VALUE;
+        minLong = Double.MAX_VALUE;
+        maxLong = Double.MIN_VALUE;
         for(NodeParser node : nodesMap.values()) {
             if(node.getLatitude() < minLat) minLat = node.getLatitude();
             if(node.getLatitude() > maxLat) maxLat = node.getLatitude();
@@ -65,19 +62,24 @@ public class Graph {
         }
         double horizontalDifferences= maxLat-minLat;
         double verticalDifferences= maxLong-minLong;
-        System.out.println();
-
         int cellsPerEdge= (int) Math.floor(Math.sqrt(numberOfCell));
+        double cellWidthHorizontal=horizontalDifferences/cellsPerEdge;
+        double cellWidthVertical=verticalDifferences/cellsPerEdge;
 
         //Make the cells
-        long itteration= (long) cellsPerEdge *cellsPerEdge;
-        for(long i=0; i<itteration; i++) {
-            cellMap.put(i, new Cell(i));
+        long iteration= (long) cellsPerEdge *cellsPerEdge;
+        for(long i=0; i<iteration; i++) {
+            Cell cell = new Cell(i);
+
+            double centerLatitude = minLat+ ((i%cellsPerEdge)* cellWidthHorizontal) + (cellWidthHorizontal/2);
+            double centerLongitude = minLong+ ( ((int)(i/cellsPerEdge)) * cellWidthVertical) + (cellWidthVertical/2);
+            cell.setCenterLatitude(centerLatitude);
+            cell.setCenterLongitude(centerLongitude);
+            cellMap.put(i, cell);
         }
 
 
-        double cellWidthHorizontal=horizontalDifferences/cellsPerEdge;
-        double cellWidthVertical=verticalDifferences/cellsPerEdge;
+
 
 
         for(NodeParser node : nodesMap.values()) {
