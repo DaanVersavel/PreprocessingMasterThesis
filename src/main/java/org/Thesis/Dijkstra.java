@@ -10,7 +10,7 @@ public class Dijkstra {
        this.graph=graph;
     }
 
-    //return map of shortest time to land marks
+    //return map of shortest time to landmarks
     public Map<Long, Double> solveDijkstra(Long startNode, List<Long> landmarksID){
         PriorityQueue<NodeParser> pq = new PriorityQueue<>(new NodeComparator());
         Map<Long,Double> shortestTimeMap = new HashMap<>();
