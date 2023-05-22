@@ -37,7 +37,7 @@ public class Input {
                     JSONObject edgeJson = (JSONObject) edgeObj;
                     EdgeParser edge = new EdgeParser((long) edgeJson.get("beginNodeOsmId"), (long) edgeJson.get("endNodeOsmId"), (double) edgeJson.get("length"));
                     edge.setEdgeType((String) edgeJson.get("edgeType"));
-                    edge.setDefaultTravelTime((double) edgeJson.get("defaultTravelTime"));
+                    edge.setDefaultTravelTime((double) edgeJson.get("travelTime"));
                     // set any other attributes for the edge
                     edges.add(edge);
                 }

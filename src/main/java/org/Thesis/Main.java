@@ -15,12 +15,12 @@ public class Main {
         //Read in file
         String fileName=args[0];
         int numberOfCell= Integer.parseInt(args[1]);
-        String outputfilename = args[2]+"-preprocessing-"+numberOfCell+"C";
+        String outputfilename = args[2]+"-preprocessing-"+numberOfCell+"R";
         int numberOfThreads = Integer.parseInt(args[3]);
 
-
-//        String fileName="D:/Onedrives/OneDrive - KU Leuven/2022-2023/Masterproof/Testen/osm-inlezen/Aalst.json";
-//        int numberOfCell= 16;
+//
+//        String fileName="D:/School/2022-2023/Masterproef/OSMLezen/aalst.json";
+//        int numberOfCell= 64;
 //        String outputfilename = "Test-Aalst-preprocessing-"+numberOfCell;
 //        int numberOfThreads = 9;
         //******************************

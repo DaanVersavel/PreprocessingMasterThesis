@@ -91,7 +91,7 @@ public class Dijkstra {
             //shortest time search
             NodeParser removedNode= pq.remove();
             if(shortestTimeMap.get(removedNode.getOsmId())==Double.MAX_VALUE){
-                System.out.println("Node met current cost max");
+               // System.out.println("Node met current cost max");
                 break;
             }
 
