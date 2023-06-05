@@ -52,49 +52,15 @@ public class Main {
             //remove empty cells
             graph.getCellMap().values().removeIf(cell -> cell.getCellList().isEmpty());
 
-//            //********************************
-//            //RANDOM
-//            //********************************
-//
-//            //choose Landmarks
-//            Random random = new Random();
-//            for(Cell cell : graph.getCellMap().values()){
-//                int index = random.nextInt(cell.getCellList().size());
-//                cell.setLandmark(cell.getCellList().get(index));
-//            }
-//
-//            boolean changed = true;
-//            while(changed){
-//                changed = false;
-//                for(Cell cell:graph.getCellMap().values()){
-//                    Dijkstra dijkstra = new Dijkstra(graph);
-//                    Map<Long, Double> map = dijkstra.solveDijkstraNormal(cell.getLandmark().getOsmId());
-//                    for(double distance:map.values()){
-//                        if(distance==Double.MAX_VALUE){
-//                            int index = random.nextInt(cell.getCellList().size());
-//                            cell.setLandmark(cell.getCellList().get(index));
-//                            changed = true;
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-
             //********************************
-            //Central
+            //RANDOM
             //********************************
 
-            DistanceComparator distanceComparator = new DistanceComparator();
+            //choose Landmarks
+            Random random = new Random();
             for(Cell cell : graph.getCellMap().values()){
-                //osmId , distance
-                for(NodeParser nodeParser:cell.getCellList()){
-                    double distance = getDistance(cell,nodeParser);
-                    nodeParser.setDistanceToCenter(distance);
-                }
-                cell.getCellList().sort(distanceComparator);
-                long landmark = cell.getCellList().get(cell.getCurrentIndex()).getOsmId();
-                cell.updateIndex();
-                cell.setLandmark(graph.getNodesMap().get(landmark));
+                int index = random.nextInt(cell.getCellList().size());
+                cell.setLandmark(cell.getCellList().get(index));
             }
 
             boolean changed = true;
@@ -105,16 +71,50 @@ public class Main {
                     Map<Long, Double> map = dijkstra.solveDijkstraNormal(cell.getLandmark().getOsmId());
                     for(double distance:map.values()){
                         if(distance==Double.MAX_VALUE){
-                            long landmark = cell.getCellList().get(cell.getCurrentIndex()).getOsmId();
-                            cell.updateIndex();
-                            cell.setLandmark(graph.getNodesMap().get(landmark));
-                            System.out.println("Changed Landmark");
+                            int index = random.nextInt(cell.getCellList().size());
+                            cell.setLandmark(cell.getCellList().get(index));
                             changed = true;
                             break;
                         }
                     }
                 }
             }
+
+            //********************************
+            //Central
+            //********************************
+
+//            DistanceComparator distanceComparator = new DistanceComparator();
+//            for(Cell cell : graph.getCellMap().values()){
+//                //osmId , distance
+//                for(NodeParser nodeParser:cell.getCellList()){
+//                    double distance = getDistance(cell,nodeParser);
+//                    nodeParser.setDistanceToCenter(distance);
+//                }
+//                cell.getCellList().sort(distanceComparator);
+//                long landmark = cell.getCellList().get(cell.getCurrentIndex()).getOsmId();
+//                cell.updateIndex();
+//                cell.setLandmark(graph.getNodesMap().get(landmark));
+//            }
+//
+//            boolean changed = true;
+//            while(changed){
+//                changed = false;
+//                for(Cell cell:graph.getCellMap().values()){
+//                    Dijkstra dijkstra = new Dijkstra(graph);
+//                    Map<Long, Double> map = dijkstra.solveDijkstraNormal(cell.getLandmark().getOsmId());
+//                    for(double distance:map.values()){
+//                        if(distance==Double.MAX_VALUE){
+//                            long landmark = cell.getCellList().get(cell.getCurrentIndex()).getOsmId();
+//                            cell.updateIndex();
+//                            cell.setLandmark(graph.getNodesMap().get(landmark));
+//                            System.out.println("Changed Landmark");
+//                            changed = true;
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
             Instant end1 = Instant.now();
             Duration timeElapsed1 = Duration.between(start1, end1);
             timeMapLandmarks.put(celsize,timeElapsed1);
@@ -145,7 +145,7 @@ public class Main {
             Duration timeElapsed2 = Duration.between(start2, end2);
             timeMapFactors.put(celsize,timeElapsed2);
         }
-        String outpath = "Oost-Vlaanderen-CalulationTime-C";
+        String outpath = "Oost-Vlaanderen-CalulationTime-R";
         Output output = new Output();
         System.out.println("Start writing to file");
         output.writeToFile(outpath,timeMapLandmarks,timeMapFactors);
