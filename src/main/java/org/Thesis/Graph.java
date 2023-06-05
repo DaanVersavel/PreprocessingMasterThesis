@@ -21,7 +21,6 @@ public class Graph {
         this.cellMap = new HashMap<>();
         this.speedMatrixMap = new HashMap<>();
         makeSpeedMatrixs();
-        //addDefaultTravelTime();
     }
 
 

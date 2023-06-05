@@ -18,11 +18,6 @@ public class Main {
         String outputfilename = args[2]+"-preprocessing-"+numberOfCell+"R";
         int numberOfThreads = Integer.parseInt(args[3]);
 
-//
-//        String fileName="D:/School/2022-2023/Masterproef/OSMLezen/aalst.json";
-//        int numberOfCell= 64;
-//        String outputfilename = "Test-Aalst-preprocessing-"+numberOfCell;
-//        int numberOfThreads = 9;
         //******************************
         //split graph in cell and choose landmarks
         //******************************
@@ -67,7 +62,7 @@ public class Main {
         //********************************
         //Central
         //********************************
-
+//
 //        DistanceComparator distanceComparator = new DistanceComparator();
 //        for(Cell cell : graph.getCellMap().values()){
 //            //osmId , distance
@@ -99,6 +94,7 @@ public class Main {
 //                }
 //            }
 //        }
+
         System.out.println("Landmarks chosen, start with making factor map");
 
         List<Long> landmarkIDs = new ArrayList<>();
@@ -122,7 +118,7 @@ public class Main {
             }
         }
 
-        Output2 output = new Output2(graph.getCellMap());
+        Output output = new Output(graph.getCellMap());
         System.out.println("Start writing to file");
         output.writeToFile(outputfilename);
         System.out.println("Done");

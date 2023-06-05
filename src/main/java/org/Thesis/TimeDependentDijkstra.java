@@ -3,9 +3,7 @@ package org.Thesis;
 import java.util.*;
 
 public class TimeDependentDijkstra {
-
     private Graph graph;
-
     public TimeDependentDijkstra(Graph graph){
         this.graph = graph;
     }
