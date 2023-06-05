@@ -6,18 +6,15 @@ public class NodeParser {
 	private long osmId;
 	private double latitude;
 	private double longitude;
-	private double currenCost;
-	private boolean dissabled;
+	private transient double distanceToCenter;
+	private transient double currenCost;
 	private long cellID;
-
-	private Set<String> types= new HashSet<>();
 	private List<EdgeParser> outgoingEdges = new ArrayList<>();
 
 	public NodeParser(long osmId, double latitude, double longitude) {
 		this.osmId = osmId;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.dissabled = false;
 		this.currenCost=0.0;
 	}
 
@@ -40,14 +37,6 @@ public class NodeParser {
 
 	public double getCurrenCost() {
 		return currenCost;
-	}
-
-	public Set<String> getTypes() {
-		return types;
-	}
-
-	public void addType(String type) {
-		types.add(type);
 	}
 
 	public void setCurrenCost(double currenCost) {
@@ -95,47 +84,6 @@ public class NodeParser {
 		return (latitude + "," + longitude);
 	}
 
-	public void removeOutgoingEdge(long nodeToRemove) {
-		for (int i = 0; i < outgoingEdges.size(); i++) {
-			EdgeParser edge = outgoingEdges.get(i);
-			if (edge.getEndNodeOsmId() == nodeToRemove) {
-				outgoingEdges.remove(edge);
-			}
-		}
-	}
-
-	public void setDissabled(boolean b) {
-		this.dissabled = b;
-	}
-
-	public boolean getDissabled() {
-		return dissabled;
-	}
-
-	public NodeParser deepCopy(NodeParser node) {
-		this.osmId = node.osmId;
-		this.latitude = node.getLatitude();
-		this.longitude = node.getLongitude();
-		this.dissabled = node.getDissabled();
-		return this;
-	}
-
-	public void cleanOutgoingedges(Map<Long, NodeParser> usableNodes) {
-		List<EdgeParser> teRemoveEdge = new ArrayList<>();
-		if (outgoingEdges != null) {
-			for (int i = 0; i < outgoingEdges.size(); i++) {
-				EdgeParser edge = outgoingEdges.get(i);
-				long osmEndId = edge.getEndNodeOsmId();
-				if (!usableNodes.containsKey(osmEndId))
-					teRemoveEdge.add(edge);
-			}
-			outgoingEdges.removeAll(teRemoveEdge);
-		}
-	}
-
-	public void setTypes(Set<String> types) {
-		this.types = types;
-	}
 	public long getCelID() {
 		return cellID;
 	}
@@ -144,6 +92,13 @@ public class NodeParser {
 		this.cellID = celID;
 	}
 
+	public double getDistanceToCenter() {
+		return distanceToCenter;
+	}
+
+	public void setDistanceToCenter(double distanceToCenter) {
+		this.distanceToCenter = distanceToCenter;
+	}
 }
 
 
